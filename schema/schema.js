@@ -1,5 +1,7 @@
 const Joi = require("joi");
 const { Schema, model } = require('mongoose');
+const bcrypt = require("bcrypt");
+
 
 const contactsSchema = Joi.object({
     name: Joi.string().required(),
@@ -23,6 +25,10 @@ const contactSchema = Schema(
             type: Boolean,
             default: false,
         },
+        owner: {
+            type: Schema.Types.ObjectId,
+            ref: 'user',
+        }
     },
     { versionKey: false, timestamps: true }
 );
@@ -48,10 +54,56 @@ const favoriteSchema = Joi.object({
     favorite: Joi.boolean().required()
 });
 
+const userSchema = Schema(
+    {
+        password: {
+            type: String,
+            required: [true, 'Set password for user'],
+        },
+        email: {
+            type: String,
+            required: [true, 'Email is required'],
+            unique: true,
+        },
+        subscription: {
+            type: String,
+            enum: ["starter", "pro", "business"],
+            default: "starter"
+        },
+        token: String
+    },
+    { versionKey: false, timestamps: true }
+);
+
+userSchema.methods.setPassword = function (password) {
+    this.password = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+};
+
+userSchema.methods.comparePassword = function (password) {
+    return bcrypt.compare(password, this.password);
+};
+
+const User = model("user", userSchema);
+
+const joiRegisterSchema = Joi.object({
+    password: Joi.string().min(6).required(),
+    email: Joi.string.required(),
+    subscription: Joi.string().required(),
+});
+
+const joiLoginSchema = Joi.object({
+    password: Joi.string().min(6),
+    email: Joi.string(),
+    subscription: Joi.string(),
+});
+
 module.exports = {
     contactsSchema,
     favoriteSchema,
     Contact,
     addContactSchema,
-    updateContactSchema
+    updateContactSchema,
+    User,
+    joiRegisterSchema,
+    joiLoginSchema
 };
