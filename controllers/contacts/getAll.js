@@ -9,8 +9,8 @@ const getAll = async (req, res) => {
     const contacts = await Contact.find({ owner: _id }, "", {
         skip,
         limit: Number(limit)
-    })
-        .populate("owner", "_id, name, email");
+    }).populate("owner", "_id, name, email");
+    
     res.json({
         status: "succsses",
         code: 200,

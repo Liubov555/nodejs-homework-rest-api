@@ -6,7 +6,8 @@ const bcrypt = require("bcrypt");
 const contactsSchema = Joi.object({
     name: Joi.string().required(),
     email: Joi.string().required(),
-    phone: Joi.boolean().default(false),
+    phone: Joi.string().required(),
+    favorite: Joi.boolean().default(false)
 });
 
 const contactSchema = Schema(

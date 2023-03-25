@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+
 const { auth, ctrlWrapper, validation } = require("../../middlewares");
 const { joiLoginSchema, joiRegisterSchema } = require("../../schema/schema");
 const { auth: ctrl } = require("../../controllers");

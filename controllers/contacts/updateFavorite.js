@@ -2,7 +2,7 @@ const { NotFound } = require("http-errors");
 const { Contact } = require("../../schema/schema");
 const ObjectId = require("mongodb").ObjectId;
 
-const updateStatusContact = async (req, res) => {
+const updateStatus = async (req, res) => {
     const owner = req.user._id;
     const _id = ObjectId(req.params.contactId);
     const { favorite } = req.body;
@@ -19,4 +19,4 @@ const updateStatusContact = async (req, res) => {
     res.json(result);
 };
 
-module.exports = updateStatusContact;
+module.exports = updateStatus;

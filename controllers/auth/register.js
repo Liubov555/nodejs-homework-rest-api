@@ -15,7 +15,7 @@ const register = async (req, res) => {
     res.status(201).json({
         RequestBody: {
             email,
-            subscription: "started"
+            subscription: "starter"
         }
     });
 
