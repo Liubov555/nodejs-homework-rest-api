@@ -71,8 +71,21 @@ const userSchema = Schema(
             enum: ["starter", "pro", "business"],
             default: "starter"
         },
-        token: String,
-        avatarURL: String,
+        token: {
+            type: String,
+            default: null
+        },
+        avatarURL: {
+            type: String,
+        },
+        verify: {
+            type: Boolean,
+            default: false,
+        },
+        verificationToken: {
+            type: String,
+            required: [true, 'Verify token is required'],
+        },
     },
     { versionKey: false, timestamps: true }
 );
@@ -99,6 +112,10 @@ const joiLoginSchema = Joi.object({
     subscription: Joi.string(),
 });
 
+const verifyEmailSchema = Joi.object({
+    email: Joi.string().required(),
+});
+
 module.exports = {
     contactsSchema,
     favoriteSchema,
@@ -107,5 +124,6 @@ module.exports = {
     updateContactSchema,
     User,
     joiRegisterSchema,
-    joiLoginSchema
+    joiLoginSchema,
+    verifyEmailSchema,
 };
